@@ -1,6 +1,7 @@
 <?php
 // Insert new discussion into database
 
+session_start();
 header('Content-Type: text/html; charset=utf-8');
 require 'db_config.php';
 
@@ -8,7 +9,11 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     die('Invalid request method.');
 }
 
-$member_id = isset($_POST['member_id']) ? trim($_POST['member_id']) : '';
+if (!isset($_SESSION['member_id'])) {
+    die('請先登入');
+}
+
+$member_id = $_SESSION['member_id'];
 $title = isset($_POST['title']) ? trim($_POST['title']) : '';
 $content = isset($_POST['content']) ? trim($_POST['content']) : '';
 
@@ -18,7 +23,6 @@ if (empty($member_id) || empty($title) || empty($content)) {
 }
 
 // Limit input length
-$member_id = substr($member_id, 0, 100);
 $title = substr($title, 0, 200);
 $content = substr($content, 0, 10000);
 

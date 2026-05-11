@@ -141,18 +141,23 @@ try {
     <div class="container">
         <h1>📋 討論區</h1>
 
-        <?php if (isset($error)): ?>
-            <div class="error"><?= escape($error) ?></div>
-        <?php endif; ?>
+        <?php if (isset($_SESSION['member_id'])): ?>
+    <p>
+        歡迎 <?= escape($_SESSION['nickname']) ?>
+        ｜ <a href="logout.php">登出</a>
+    </p>
+    <?php else: ?>
+    <p>
+        <a href="login.php">登入</a>
+        ｜ 
+        <a href="register.php">註冊</a>
+    </p>
+    <?php endif; ?>
 
         <div class="form-box">
             <h2>發表新討論</h2>
             <form action="post.php" method="post">
-                <div class="form-group">
-                    <label for="member_id">作者：</label>
-                    <input type="text" id="member_id" name="member_id" maxlength="100" required>
-                </div>
-
+                
                 <div class="form-group">
                     <label for="title">標題：</label>
                     <input type="text" id="title" name="title" maxlength="200" required>

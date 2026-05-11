@@ -1,6 +1,7 @@
 <?php
 // Insert reply into database
 
+session_start();
 header('Content-Type: text/html; charset=utf-8');
 require 'db_config.php';
 

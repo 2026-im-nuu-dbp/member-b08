@@ -1,6 +1,7 @@
 <?php
 // Display discussion content and replies
 
+session_start();
 header('Content-Type: text/html; charset=utf-8');
 require 'db_config.php';
 
@@ -208,21 +209,19 @@ try {
 
         <div class="form-box">
             <h2>發表回應</h2>
+            <?php if (isset($_SESSION['member_id'])): ?>
             <form action="post_reply.php" method="post">
-                <input type="hidden" name="news_id" value="<?= $newsId ?>">
+                 <input type="hidden" name="news_id" value="<?= $newsId ?>">
 
-                <div class="form-group">
-                    <label for="member_id">作者：</label>
-                    <input type="text" id="member_id" name="member_id" maxlength="100" required>
-                </div>
-
-                <div class="form-group">
+                    <div class="form-group">
                     <label for="content">回應內容：</label>
                     <textarea id="content" name="content" required></textarea>
                 </div>
-
                 <button type="submit">送出回應</button>
             </form>
+<?php else: ?>
+<p><a href="login.php">登入後才能回應</a></p>
+<?php endif; ?>
         </div>
     </div>
 </body>
