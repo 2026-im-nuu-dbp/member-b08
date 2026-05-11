@@ -7,11 +7,11 @@ require 'db_config.php';
 // Fetch all news topics with reply count
 try {
     $stmt = $pdo->query('
-        SELECT n.id, n.title, n.author, n.created_at,
+        SELECT n.id, n.title, n.member_id, n.created_at,
                COUNT(r.id) as reply_count
         FROM news n
         LEFT JOIN replies r ON n.id = r.news_id
-        GROUP BY n.id, n.title, n.author, n.created_at
+        GROUP BY n.id, n.title, n.member_id, n.created_at
         ORDER BY n.created_at DESC
     ');
     $news = $stmt->fetchAll();

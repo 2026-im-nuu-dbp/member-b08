@@ -12,7 +12,7 @@ if ($newsId <= 0) {
 
 // Fetch news content
 try {
-    $stmt = $pdo->prepare('SELECT id, title, content, author, created_at FROM news WHERE id = ?');
+    $stmt = $pdo->prepare('SELECT id, title, content, member_id, created_at FROM news WHERE id = ?');
     $stmt->execute([$newsId]);
     $news = $stmt->fetch();
 
@@ -26,7 +26,7 @@ try {
 // Fetch replies
 try {
     $stmt = $pdo->prepare('
-        SELECT id, content, author, created_at 
+        SELECT id, content, member_id, created_at 
         FROM replies 
         WHERE news_id = ? 
         ORDER BY created_at ASC
@@ -178,7 +178,7 @@ try {
         <div class="news-content">
             <div class="news-title"><?= escape($news['title']) ?></div>
             <div class="news-meta">
-                由 <strong><?= escape($news['author']) ?></strong> 發表於
+                由 <strong><?= escape($news['member_id']) ?></strong> 發表於
                 <?= escape($news['created_at']) ?>
             </div>
             <div class="news-body"><?= escape($news['content']) ?></div>
@@ -193,7 +193,7 @@ try {
                 <?php foreach ($replies as $reply): ?>
                     <div class="reply-item">
                         <div class="reply-author">
-                            <?= escape($reply['author']) ?>
+                            <?= escape($reply['member_id']) ?>
                             <span class="reply-time">
                                 - <?= escape($reply['created_at']) ?>
                             </span>
@@ -212,8 +212,8 @@ try {
                 <input type="hidden" name="news_id" value="<?= $newsId ?>">
 
                 <div class="form-group">
-                    <label for="author">作者：</label>
-                    <input type="text" id="author" name="author" maxlength="100" required>
+                    <label for="member_id">作者：</label>
+                    <input type="text" id="member_id" name="member_id" maxlength="100" required>
                 </div>
 
                 <div class="form-group">
