@@ -9,7 +9,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 }
 
 $newsId = isset($_POST['news_id']) ? intval($_POST['news_id']) : 0;
-$author = isset($_POST['author']) ? trim($_POST['author']) : '';
+$member_id = isset($_POST['member_id']) ? trim($_POST['member_id']) : '';
 $content = isset($_POST['content']) ? trim($_POST['content']) : '';
 
 // Validation
@@ -17,7 +17,7 @@ if ($newsId <= 0) {
     die('無效的討論 ID。<br><a href="index.php">返回</a>');
 }
 
-if (empty($author) || empty($content)) {
+if (empty($member_id) || empty($content)) {
     die('所有欄位都必須填寫。<br><a href="show_news.php?id=' . $newsId . '">返回</a>');
 }
 
@@ -33,12 +33,12 @@ try {
 }
 
 // Limit input length
-$author = substr($author, 0, 100);
+$member_id = substr($member_id, 0, 100);
 $content = substr($content, 0, 10000);
 
 try {
-    $stmt = $pdo->prepare('INSERT INTO replies (news_id, content, author) VALUES (?, ?, ?)');
-    $stmt->execute([$newsId, $content, $author]);
+    $stmt = $pdo->prepare('INSERT INTO replies (news_id, content, member_id) VALUES (?, ?, ?)');
+    $stmt->execute([$newsId, $content, $member_id]);
 
     // Redirect back to discussion page
     header('Location: show_news.php?id=' . $newsId);

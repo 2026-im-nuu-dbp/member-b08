@@ -149,8 +149,8 @@ try {
             <h2>發表新討論</h2>
             <form action="post.php" method="post">
                 <div class="form-group">
-                    <label for="author">作者：</label>
-                    <input type="text" id="author" name="author" maxlength="100" required>
+                    <label for="member_id">作者：</label>
+                    <input type="text" id="member_id" name="member_id" maxlength="100" required>
                 </div>
 
                 <div class="form-group">
@@ -188,7 +188,7 @@ try {
                             <?php endif; ?>
                         </div>
                         <div class="news-meta">
-                            由 <strong><?= escape($item['author']) ?></strong> 發表於
+                            由 <strong><?= escape($item['member_id']) ?></strong> 發表於
                             <?= escape($item['created_at']) ?>
                         </div>
                     </div>
