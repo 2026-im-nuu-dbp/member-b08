@@ -13,7 +13,15 @@ if ($newsId <= 0) {
 
 // Fetch news content
 try {
-    $stmt = $pdo->prepare('SELECT id, title, content, member_id, created_at FROM news WHERE id = ?');
+    $stmt = $pdo->prepare('SELECT 
+        n.id,
+        n.title,
+        n.content,
+        n.created_at,
+        m.nickname
+    FROM news n
+    JOIN members m ON n.member_id = m.id
+    WHERE n.id = ?');
     $stmt->execute([$newsId]);
     $news = $stmt->fetch();
 
@@ -27,10 +35,15 @@ try {
 // Fetch replies
 try {
     $stmt = $pdo->prepare('
-        SELECT id, content, member_id, created_at 
-        FROM replies 
-        WHERE news_id = ? 
-        ORDER BY created_at ASC
+        SELECT 
+            r.id,
+            r.content,
+            r.created_at,
+            m.nickname
+        FROM replies r
+        JOIN members m ON r.member_id = m.id
+        WHERE r.news_id = ?
+        ORDER BY r.created_at ASC
     ');
     $stmt->execute([$newsId]);
     $replies = $stmt->fetchAll();
@@ -179,7 +192,7 @@ try {
         <div class="news-content">
             <div class="news-title"><?= escape($news['title']) ?></div>
             <div class="news-meta">
-                由 <strong><?= escape($news['member_id']) ?></strong> 發表於
+                由 <strong><?= escape($news['nickname']) ?></strong> 發表於
                 <?= escape($news['created_at']) ?>
             </div>
             <div class="news-body"><?= escape($news['content']) ?></div>
@@ -194,7 +207,7 @@ try {
                 <?php foreach ($replies as $reply): ?>
                     <div class="reply-item">
                         <div class="reply-author">
-                            <?= escape($reply['member_id']) ?>
+                            <?= escape($reply['nickname']) ?>
                             <span class="reply-time">
                                 - <?= escape($reply['created_at']) ?>
                             </span>

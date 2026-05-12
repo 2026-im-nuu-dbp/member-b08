@@ -1,17 +1,22 @@
 <?php
 // Read and display discussion topics
-
+session_start();
 header('Content-Type: text/html; charset=utf-8');
 require 'db_config.php';
 
 // Fetch all news topics with reply count
 try {
     $stmt = $pdo->query('
-        SELECT n.id, n.title, n.member_id, n.created_at,
-               COUNT(r.id) as reply_count
+        SELECT 
+        n.id,
+        n.title,
+        n.created_at,
+        m.nickname,
+        COUNT(r.id) as reply_count
         FROM news n
+        JOIN members m ON n.member_id = m.id
         LEFT JOIN replies r ON n.id = r.news_id
-        GROUP BY n.id, n.title, n.member_id, n.created_at
+        GROUP BY n.id, n.title, n.created_at, m.nickname
         ORDER BY n.created_at DESC
     ');
     $news = $stmt->fetchAll();
@@ -140,6 +145,11 @@ try {
 <body>
     <div class="container">
         <h1>📋 討論區</h1>
+        <?php if (isset($_SESSION['is_admin']) && $_SESSION['is_admin'] == 1): ?>
+    <p>
+        <a href="admin_members.php">會員管理</a>
+    </p>
+    <?php endif; ?>
 
         <?php if (isset($_SESSION['member_id'])): ?>
     <p>
@@ -193,13 +203,14 @@ try {
                             <?php endif; ?>
                         </div>
                         <div class="news-meta">
-                            由 <strong><?= escape($item['member_id']) ?></strong> 發表於
+                            由 <strong><?= escape($item['nickname']) ?></strong> 發表於
                             <?= escape($item['created_at']) ?>
                         </div>
                     </div>
                 <?php endforeach; ?>
             </div>
         <?php endif; ?>
+        
     </div>
 </body>
 </html>

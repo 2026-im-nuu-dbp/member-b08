@@ -15,6 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') { //這行程式碼是 PHP 開發中�
     if ($member && password_verify($password, $member['password'])) {
         $_SESSION['member_id'] = $member['id'];
         $_SESSION['nickname'] = $member['nickname'];
+        $_SESSION['is_admin'] = $member['is_admin'];
 
         header('Location: index.php');
         exit;
