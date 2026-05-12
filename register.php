@@ -1,23 +1,39 @@
 <?php
-session_start();
 require 'db_config.php';
+session_start();
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $username = trim($_POST['username']);
-    $password = trim($_POST['password']);
-    $nickname = trim($_POST['nickname']);
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-    if ($username && $password && $nickname) {
-        $hash = password_hash($password, PASSWORD_DEFAULT);
+    $username = $_POST['username'];
+    $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
+    $color = $_POST['color'];
+    $nickname = $_POST['nickname'];
 
-        $stmt = $pdo->prepare(
-            'INSERT INTO members (username, password, nickname) VALUES (?, ?, ?)'
-        );
-        $stmt->execute([$username, $hash, $nickname]);
+    // ===== 圖片上傳 =====
+    $avatarName = $_FILES['avatar']['name'];
+    $tmp = $_FILES['avatar']['tmp_name'];
 
-        header('Location: login.php');
-        exit;
-    }
+    $newName = time() . "_" . $avatarName;
+    $path = "upload/" . $newName;
+
+    move_uploaded_file($tmp, $path);
+
+    // ===== PDO 寫入 =====
+    $sql = "INSERT INTO members(username, password, nickname, color, avatar)
+            VALUES(:username, :password, :nickname, :color, :avatar)";
+
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([
+        ':username' => $username,
+        ':password' => $password,
+        ':nickname' => $nickname,
+        ':color' => $color,
+        ':avatar' => $path
+    ]);
+
+    echo "註冊成功";
+    header("refresh:3;url=login.php");
+    exit;
 }
 ?>
 
@@ -28,15 +44,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <title>會員註冊</title>
 </head>
 <body>
+
 <h2>會員註冊</h2>
 
-<form method="post">
-    帳號：<input type="text" name="username" required><br><br>
-    密碼：<input type="password" name="password" required><br><br>
-    暱稱：<input type="text" name="nickname" required><br><br>
+<form action="register.php" method="post" enctype="multipart/form-data">
+
+    帳號：<input type="text" name="username"><br>
+    密碼：<input type="password" name="password"><br>
+
+    喜歡的顏色：
+    <input type="color" name="color" value="#ffffff"><br>
+
+    大頭貼：
+    <input type="file" name="avatar"><br>
+
+    暱稱：
+    <input type="text" name="nickname"><br>
+
     <button type="submit">註冊</button>
+
 </form>
 
-<p><a href="login.php">登入</a></p>
 </body>
 </html>
