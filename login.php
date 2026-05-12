@@ -4,7 +4,7 @@ require 'db_config.php';  //require
 
 $error = '';
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') { //這行程式碼是 PHP 開發中極其重要的「門神」，它的主要作用是判斷當前的請求是否為 POST 提交
     $username = trim($_POST['username']);
     $password = trim($_POST['password']);
 
