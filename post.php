@@ -17,8 +17,8 @@ $member_id = $_SESSION['member_id'];
 $title = isset($_POST['title']) ? trim($_POST['title']) : '';
 $content = isset($_POST['content']) ? trim($_POST['content']) : '';
 
-// Validation
-if (empty($member_id) || empty($title) || empty($content)) {
+// 修改後的驗證：只檢查內容和會員 ID
+if (empty($member_id) || empty($content)) {
     die('所有欄位都必須填寫。<br><a href="index.php">返回</a>');
 }
 

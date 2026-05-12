@@ -212,9 +212,7 @@ try {
                                 - <?= escape($reply['created_at']) ?>
                             </span>
                         </div>
-                        <div class="reply-content">
-                            <?= escape($reply['content']) ?>
-                        </div>
+                        <div class="reply-content"><?= escape($reply['content']) ?></div>
                     </div>
                 <?php endforeach; ?>
             <?php endif; ?>

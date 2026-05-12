@@ -10,7 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 }
 
 $newsId = isset($_POST['news_id']) ? intval($_POST['news_id']) : 0;
-$member_id = isset($_POST['member_id']) ? trim($_POST['member_id']) : '';
+$member_id = isset($_SESSION['member_id']) ? $_SESSION['member_id'] : '';
 $content = isset($_POST['content']) ? trim($_POST['content']) : '';
 
 // Validation
