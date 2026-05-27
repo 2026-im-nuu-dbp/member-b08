@@ -18,7 +18,9 @@ try {
         n.title,
         n.content,
         n.created_at,
-        m.nickname
+        m.nickname,
+        m.avatar,
+        m.color
     FROM news n
     JOIN members m ON n.member_id = m.id
     WHERE n.id = ?');
@@ -39,7 +41,9 @@ try {
             r.id,
             r.content,
             r.created_at,
-            m.nickname
+            m.nickname,
+            m.avatar,
+            m.color
         FROM replies r
         JOIN members m ON r.member_id = m.id
         WHERE r.news_id = ?
@@ -191,9 +195,31 @@ try {
 
         <div class="news-content">
             <div class="news-title"><?= escape($news['title']) ?></div>
-            <div class="news-meta">
-                由 <strong><?= escape($news['nickname']) ?></strong> 發表於
-                <?= escape($news['created_at']) ?>
+            <div class="news-meta"
+                style="
+                    background: <?= escape($news['color']) ?>;
+                    padding:15px;
+                    border-radius:10px;
+                ">
+
+                <strong>
+                    <?= escape($news['nickname']) ?>
+                </strong>
+
+                <img src="<?= escape($news['avatar']) ?>"
+                    width="45"
+                    height="45"
+                    style="
+                        border-radius:50%;
+                        vertical-align:middle;
+                        margin-left:8px;
+                        object-fit:cover;
+                    ">
+
+                <br>
+
+                發表於 <?= escape($news['created_at']) ?>
+
             </div>
             <div class="news-body"><?= escape($news['content']) ?></div>
         </div>
@@ -205,15 +231,59 @@ try {
                 <p class="empty">目前沒有回應。</p>
             <?php else: ?>
                 <?php foreach ($replies as $reply): ?>
-                    <div class="reply-item">
-                        <div class="reply-author">
+
+                <div class="reply-item"
+                    style="
+                        background: <?= escape($reply['color']) ?>;
+                        border-left:4px solid #007bff;
+                        border-radius:10px;
+                        padding:15px;
+                        margin-bottom:15px;
+                    ">
+
+                    <!-- 同一排 -->
+                    <div style="
+                        display:flex;
+                        align-items:center;
+                        gap:10px;
+                    ">
+
+                        <!-- 暱稱 -->
+                        <strong style="color:#007bff;">
                             <?= escape($reply['nickname']) ?>
-                            <span class="reply-time">
-                                - <?= escape($reply['created_at']) ?>
-                            </span>
-                        </div>
-                        <div class="reply-content"><?= escape($reply['content']) ?></div>
+                        </strong>
+
+                        <!-- 頭像 -->
+                        <img src="<?= escape($reply['avatar']) ?>"
+                            style="
+                                width:50px;
+                                height:50px;
+                                border-radius:50%;
+                                object-fit:cover;
+                                border:2px solid white;
+                            ">
+
+                        <!-- 時間 -->
+                        <span style="
+                            color:#888;
+                            font-size:14px;
+                        ">
+                            <?= escape($reply['created_at']) ?>
+                        </span>
+
                     </div>
+
+                    <!-- 回覆內容 -->
+                    <div style="
+                        margin-top:15px;
+                        padding-left:10px;
+                        line-height:1.7;
+                    ">
+                        <?= nl2br(escape($reply['content'])) ?>
+                    </div>
+
+                </div>
+
                 <?php endforeach; ?>
             <?php endif; ?>
         </div>
