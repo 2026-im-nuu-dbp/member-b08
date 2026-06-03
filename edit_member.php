@@ -11,7 +11,7 @@ $id = intval($_GET['id']);
 $stmt = $pdo->prepare('SELECT * FROM members WHERE id = ?');
 $stmt->execute([$id]);
 
-$member = $stmt->fetch();
+$member = $stmt->fetch(); //fetch()：從 PDOStatement 對象中獲取下一行資料。這裡的 $stmt->fetch() 表示從之前執行的 SQL 查詢結果中獲取一行資料，並將其存入 $member 變數中。由於我們使用了 PDO::FETCH_ASSOC 模式，所以 $member 會是一個關聯陣列，其中的鍵是資料表中的欄位名稱，值則是對應欄位的資料值。如果查詢結果中沒有更多的資料行可供獲取，fetch() 方法會返回 false。
 
 if (!$member) {
     die('找不到會員');

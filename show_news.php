@@ -4,9 +4,8 @@
 session_start();
 header('Content-Type: text/html; charset=utf-8');
 require 'db_config.php';
-
-$newsId = isset($_GET['id']) ? intval($_GET['id']) : 0;
-
+//intval(...)：將變數轉換為整數類型。這裡的 $_GET['id'] 是從 URL 中獲取的值，可能是字串類型。通過使用 intval() 函式，我們可以將這個值轉換為整數，以確保在後續的程式碼中使用 $newsId 變數時，它是一個有效的整數值。
+$newsId = isset($_GET['id']) ? intval($_GET['id']) : 0;//isset(...)：用於檢查變數是否已經被設定並且不是 null 的函式。
 if ($newsId <= 0) {
     die('無效的討論 ID。<br><a href="index.php">返回首頁</a>');
 }
@@ -31,7 +30,8 @@ try {
         die('找不到此討論。<br><a href="index.php">返回首頁</a>');
     }
 } catch (PDOException $e) {
-    die('讀取討論失敗: ' . $e->getMessage());
+    die('讀取討論失敗: ' . $e->getMessage());//getMessage()：用於從捕獲到的 PDOException 異常對象中獲取錯誤訊息。當在 try 區塊中執行資料庫操作時，如果發生任何錯誤，會拋出一個 PDOException 異常，這個異常對象包含了有關錯誤的詳細信息。通過調用 $e->getMessage() 方法，我們可以獲取這些錯誤訊息，並將它們顯示給使用者或記錄到日誌中，以便進行調試和問題排查。
+    
 }
 
 // Fetch replies
