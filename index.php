@@ -166,7 +166,9 @@ try {
         ｜ 
         <a href="register.php">註冊</a>
     </p>
-    <?php endif; ?>  //endif 是 if 條件語句的結束標誌，表示前面的 if 條件判斷結束了。這裡的 if 條件是用來檢查使用者是否已經登入（即是否存在 member_id 的 Session 變數）。如果使用者已經登入，就會顯示歡迎訊息和登出連結；如果使用者尚未登入，就會顯示登入和註冊的連結。最後的 endif; 就是這個條件判斷的結束，告訴 PHP 這裡不再屬於 if 條件內的程式碼了。
+    <?php 
+    //endif 是 if 條件語句的結束標誌，表示前面的 if 條件判斷結束了。這裡的 if 條件是用來檢查使用者是否已經登入（即是否存在 member_id 的 Session 變數）。如果使用者已經登入，就會顯示歡迎訊息和登出連結；如果使用者尚未登入，就會顯示登入和註冊的連結。最後的 endif; 就是這個條件判斷的結束，告訴 PHP 這裡不再屬於 if 條件內的程式碼了。
+    endif; ?>  
 
         <div class="form-box">
             <h2>發表新討論</h2>
@@ -194,17 +196,23 @@ try {
             </div>
         <?php else: ?>
             <div class="news-list">
-                <?php foreach ($news as $item): ?>  //foreach 是 PHP 中用來遍歷陣列或物件的語法結構。這裡的 foreach ($news as $item) 表示對 $news 陣列中的每一個元素（每一篇討論主題）進行迭代，將當前元素的值賦給變數 $item。在迴圈內部，我們可以使用 $item 來訪問當前討論主題的相關資訊（例如 id、title、nickname 等），並將它們顯示在 HTML 中。最後的 endforeach; 就是這個迴圈的結束標誌，告訴 PHP 這裡不再屬於 foreach 迴圈內的程式碼了。
+                <?php 
+                //foreach 是 PHP 中用來遍歷陣列或物件的語法結構。這裡的 foreach ($news as $item) 表示對 $news 陣列中的每一個元素（每一篇討論主題）進行迭代，將當前元素的值賦給變數 $item。在迴圈內部，我們可以使用 $item 來訪問當前討論主題的相關資訊（例如 id、title、nickname 等），並將它們顯示在 HTML 中。最後的 endforeach; 就是這個迴圈的結束標誌，告訴 PHP 這裡不再屬於 foreach 迴圈內的程式碼了。
+                //href=這是一個超連結，當使用者點擊這個連結時，瀏覽器會導向 show_news.php 頁面，並且在 URL 中帶上 id 參數，值為該討論主題的 id。這樣 show_news.php 就可以根據這個 id 來查詢並顯示對應的討論內容和回覆。
+                foreach ($news as $item): ?>  
                     <div class="news-item">
                         <div class="news-title">
-                            <a href="show_news.php?id=<?= $item['id'] ?>">  //href=這是一個超連結，當使用者點擊這個連結時，瀏覽器會導向 show_news.php 頁面，並且在 URL 中帶上 id 參數，值為該討論主題的 id。這樣 show_news.php 就可以根據這個 id 來查詢並顯示對應的討論內容和回覆。
+                            <a href="show_news.php?id=<?= $item['id'] ?>">  
                                 <?= escape($item['title']) ?>
                             </a>
                             <?php if ($item['reply_count'] > 0): ?>
                                 <span class="reply-count">
                                     <?= $item['reply_count'] ?> 則回應
                                 </span>
-                            <?php endif; ?>  //endif 是 if 條件語句的結束標誌，表示前面的 if 條件判斷結束了。這裡的 if 條件是用來檢查該討論主題的回應數量（reply_count）是否大於 0。如果回應數量大於 0，就會顯示一個綠色的標籤，裡面寫著「X 則回應」，其中 X 是實際的回應數量。最後的 endif; 就是這個條件判斷的結束，告訴 PHP 這裡不再屬於 if 條件內的程式碼了。
+                            <?php
+                            //endif 是 if 條件語句的結束標誌，表示前面的 if 條件判斷結束了。這裡的 if 條件是用來檢查該討論主題的回應數量（reply_count）是否大於 0。如果回應數量大於 0，就會顯示一個綠色的標籤，裡面寫著「X 則回應」，其中 X 是實際的回應數量。最後的 endif; 就是這個條件判斷的結束，告訴 PHP 這裡不再屬於 if 條件內的程式碼了。
+                            //escape() 是一個自定義的函式，通常用來對輸出到 HTML 的資料進行轉義處理，以防止 XSS（跨站腳本攻擊）等安全問題。這裡的 escape($item['nickname']) 表示將該討論主題的發表者暱稱進行轉義後輸出，確保即使暱稱中包含特殊字元（例如 <、>、& 等），也不會被瀏覽器解讀為 HTML 標籤或程式碼，而是以純文字的形式顯示在頁面上。
+                            endif; ?>  
                         </div>
                         <div class="news-meta"
                             style="
@@ -214,7 +222,7 @@ try {
                         ">
 
                         <strong>
-                            <?= escape($item['nickname']) ?>  //escape() 是一個自定義的函式，通常用來對輸出到 HTML 的資料進行轉義處理，以防止 XSS（跨站腳本攻擊）等安全問題。這裡的 escape($item['nickname']) 表示將該討論主題的發表者暱稱進行轉義後輸出，確保即使暱稱中包含特殊字元（例如 <、>、& 等），也不會被瀏覽器解讀為 HTML 標籤或程式碼，而是以純文字的形式顯示在頁面上。
+                            <?= escape($item['nickname']) ?>  
                         </strong>
 
                         <img src="<?= escape($item['avatar']) ?>"
@@ -233,7 +241,9 @@ try {
 
                     </div>
                     </div>
-                <?php endforeach; ?>  //endforeach 是 foreach 迴圈的結束標誌，表示前面的 foreach 條件判斷結束了。這裡的 foreach 條件是用來遍歷 $news 陣列中的每一個討論主題，並將當前討論主題的資訊賦值給 $item 變數。在迴圈內部，我們使用 $item 來顯示每個討論主題的標題、發表者資訊、發表時間等。最後的 endforeach; 就是這個迴圈的結束，告訴 PHP 這裡不再屬於 foreach 迴圈內的程式碼了。
+                <?php
+                //endforeach 是 foreach 迴圈的結束標誌，表示前面的 foreach 條件判斷結束了。這裡的 foreach 條件是用來遍歷 $news 陣列中的每一個討論主題，並將當前討論主題的資訊賦值給 $item 變數。在迴圈內部，我們使用 $item 來顯示每個討論主題的標題、發表者資訊、發表時間等。最後的 endforeach; 就是這個迴圈的結束，告訴 PHP 這裡不再屬於 foreach 迴圈內的程式碼了。
+                endforeach; ?>  
             </div>
         <?php endif; ?>
         
