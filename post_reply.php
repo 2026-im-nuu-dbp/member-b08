@@ -9,9 +9,10 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     die('Invalid request method.');
 }
 
+//intval(...)：將變數轉換為整數類型。這裡的 $_POST['news_id'] 是從表單提交過來的值，可能是字串類型。通過使用 intval() 函式，我們可以將這個值轉換為整數，以確保在後續的程式碼中使用 $newsId 變數時，它是一個有效的整數值。
 $newsId = isset($_POST['news_id']) ? intval($_POST['news_id']) : 0;  //isset是用來檢查變數是否已經被設定並且不是 null 的函式。這裡用來檢查 $_POST['news_id'] 是否存在，如果存在就將其轉換為整數並賦值給 $newsId 變數；如果不存在則將 $newsId 設置為 0。這樣做的目的是確保 $newsId 變數始終有一個有效的整數值，避免在後續的程式碼中出現未定義變數或非整數值的問題。
 $member_id = isset($_SESSION['member_id']) ? $_SESSION['member_id'] : '';  //$_SESSION 是一個超全局變數，用於存儲用戶的會話資料。這裡使用 isset() 函式來檢查 $_SESSION['member_id'] 是否已經被設定，如果已經設定就將其值賦給 $member_id 變數；如果沒有設定則將 $member_id 設置為空字串。這樣做的目的是確保 $member_id 變數始終有一個有效的值，避免在後續的程式碼中出現未定義變數或空值的問題。
-$content = isset($_POST['content']) ? trim($_POST['content']) : '';
+$content = isset($_POST['content']) ? trim($_POST['content']) : '';  //trim(...)：去除字串前後的空白字符。這裡的 $_POST['content'] 是從表單提交過來的回應內容，可能包含使用者不小心輸入的前後空格。通過使用 trim() 函式，我們可以去除這些多餘的空白字符，確保 $content 變數中只包含實際的回應內容，避免在後續的程式碼中出現不必要的空格或格式問題。
 
 // Validation
 if ($newsId <= 0) {
