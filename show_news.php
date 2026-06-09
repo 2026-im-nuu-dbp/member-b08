@@ -31,7 +31,7 @@ try {
     }
 } catch (PDOException $e) {
     die('讀取討論失敗: ' . $e->getMessage());//getMessage()：用於從捕獲到的 PDOException 異常對象中獲取錯誤訊息。當在 try 區塊中執行資料庫操作時，如果發生任何錯誤，會拋出一個 PDOException 異常，這個異常對象包含了有關錯誤的詳細信息。通過調用 $e->getMessage() 方法，我們可以獲取這些錯誤訊息，並將它們顯示給使用者或記錄到日誌中，以便進行調試和問題排查。
-    
+
 }
 
 // Fetch replies
@@ -254,7 +254,8 @@ try {
                         </strong>
 
                         <!-- 頭像 -->
-                        <img src="<?= escape($reply['avatar']) ?>"
+                        <!--escape() 是一個自定義的函式，通常用來對輸出到 HTML 的資料進行轉義處理，以防止 XSS（跨站腳本攻擊）等安全問題。這裡的 escape($reply['avatar']) 表示將該回應者的頭像 URL 進行轉義後輸出，確保即使 URL 中包含特殊字元（例如 <、>、& 等），也不會被瀏覽器解讀為 HTML 標籤或程式碼，而是以純文字的形式顯示在頁面上-->
+                        <img src="<?= escape($reply['avatar']) ?>"  
                             style="
                                 width:50px;
                                 height:50px;
